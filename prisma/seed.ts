@@ -1,6 +1,6 @@
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '../src/generated/prisma/client'
-import { seedDatabase } from 'src/utils/utilsDb'
+import { seedDatabase } from 'src/utils/extensions/utilsDb'
 import { seedUsers } from './userseed/seed'
 
 const connectionString = process.env.DATABASE_URL

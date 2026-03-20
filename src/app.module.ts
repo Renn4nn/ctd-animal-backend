@@ -18,8 +18,8 @@ import {
   Catch,
 } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { CustomPrismaModule } from './utils/custom.prisma';
-import { PrismaClientFactory } from './utils/prisma.utils';
+import { CustomPrismaModule } from './utils/extensions/custom.prisma';
+import { PrismaClientFactory } from './utils/extensions/prisma.utils';
 import { UserModule } from './user/user.module';
 
 @Catch(HttpException)
