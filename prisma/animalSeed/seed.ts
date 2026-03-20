@@ -1,0 +1,65 @@
+import { AnimalSize, AnimalSex, AnimalStatus } from "src/generated/prisma/enums";
+import { v4 as uuidv4 } from "uuid"
+
+export const seedAnimals = [
+  {
+    id: uuidv4(),
+    name: "Bento",
+    typeId: 1, // Referência ao ID 1 (Cachorros)
+    breed: "SRD caramelo",
+    age: "2 anos",
+    description: "Sociável, brincalhão e ótimo com famílias em primeira adoção.",
+    story: "Bento chegou ao abrigo após ser resgatado próximo a uma praça.",
+    behavior: "Ama passeios curtos, aceita guia com facilidade.",
+    vaccines: ["V10", "Antirrábica", "Vermifugado"],
+    size: "Medio" as AnimalSize, // Deve bater com o Enum do Prisma (sem acento)
+    sex: "Macho" as AnimalSex,
+    photos: ["https://marilianoticia.com.br/wp-content/uploads/2025/05/Feira-de-adocao-de-animais-tera-mais-uma-edicao-na-cidade.jpg"],
+    status: "Disponivel" as AnimalStatus,
+  },
+  {
+    id: uuidv4(),
+    name: "Luna",
+    typeId: 1,
+    breed: "SRD porte médio",
+    age: "1 ano e 8 meses",
+    description: "Carinhosa, curiosa e muito conectada com pessoas.",
+    story: "Luna foi acolhida ainda filhote e hoje é uma cadela equilibrada.",
+    behavior: "Convive bem com outros cães.",
+    vaccines: ["V10", "Giárdia", "Antirrábica"],
+    size: "Medio" as AnimalSize,
+    sex: "Femea" as AnimalSex,
+    photos: ["https://love.doghero.com.br/wp-content/uploads/2018/06/shutterstock_1058092325.jpg"],
+    status: "Disponivel" as AnimalStatus,
+  },
+  {
+    id: uuidv4(),
+    name: "Mel",
+    typeId: 2, // Referência ao ID 2 (Gatos)
+    breed: "Tigrada brasileira",
+    age: "2 anos",
+    description: "Curiosa, elegante e muito confortável com colo.",
+    story: "Mel foi resgatada com os irmãos e se tornou uma gata segura.",
+    behavior: "Observa tudo do alto, usa arranhador.",
+    vaccines: ["V4", "Antirrábica", "Castrada"],
+    size: "Pequeno" as AnimalSize,
+    sex: "Femea" as AnimalSex,
+    photos: ["https://static.ndmais.com.br/2024/05/gato-preto-657x800.jpeg"],
+    status: "Disponivel" as AnimalStatus,
+  },
+  {
+    id: uuidv4(),
+    name: "Noir",
+    typeId: 2,
+    breed: "SRD preta",
+    age: "3 anos",
+    description: "Sereno, independente e muito apegado.",
+    story: "Noir foi acolhido adulto e hoje está totalmente adaptado.",
+    behavior: "Gosta de cobertores e momentos silenciosos.",
+    vaccines: ["V4", "Antirrábica", "Castrado"],
+    size: "Pequeno" as AnimalSize,
+    sex: "Macho" as AnimalSex,
+    photos: ["https://catland.org.br/wp-content/uploads/2023/04/foto-1.png"],
+    status: "Disponivel" as AnimalStatus,
+  },
+];

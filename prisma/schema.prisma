@@ -1,11 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
   moduleFormat = "cjs"
 }
 
@@ -14,9 +9,69 @@ datasource db {
 }
 
 model User {
-  id    String @id @default(uuid())
-  email String @unique
-  name  String
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum AnimalSize {
+  Pequeno
+  Medio
+  Grande
+}
+
+enum AnimalSex {
+  Macho
+  Femea
+}
+
+enum AnimalStatus {
+  Disponivel
+  Adotado
+}
+
+model AnimalType {
+  id        Int      @id @default(autoincrement())
+  label     String   @unique
+  active    Boolean  @default(true)
+  animals   Animal[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Animal {
+  id          String       @id @default(uuid())
+  name        String
+  type        AnimalType   @relation(fields: [typeId], references: [id])
+  typeId      Int
+  breed       String
+  age         String
+  description String?
+  story       String?
+  behavior    String?
+  vaccines    String[]
+  size        AnimalSize
+  sex         AnimalSex
+  photos      String[]
+  status      AnimalStatus @default(Disponivel)
+
+  adoptionLog AdoptionLog?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AdoptionLog {
+  id       String @id @default(uuid())
+  animal   Animal @relation(fields: [animalId], references: [id])
+  animalId String @unique
+
+  adopterName  String
+  adopterCpf   String
+  adopterPhone String
+  adopterEmail String
+
+  adoptedAt DateTime @default(now())
 }

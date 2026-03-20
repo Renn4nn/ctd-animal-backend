@@ -51,7 +51,10 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  User: 'User'
+  User: 'User',
+  AnimalType: 'AnimalType',
+  Animal: 'Animal',
+  AdoptionLog: 'AdoptionLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -81,6 +84,51 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const AnimalTypeScalarFieldEnum = {
+  id: 'id',
+  label: 'label',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AnimalTypeScalarFieldEnum = (typeof AnimalTypeScalarFieldEnum)[keyof typeof AnimalTypeScalarFieldEnum]
+
+
+export const AnimalScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  typeId: 'typeId',
+  breed: 'breed',
+  age: 'age',
+  description: 'description',
+  story: 'story',
+  behavior: 'behavior',
+  vaccines: 'vaccines',
+  size: 'size',
+  sex: 'sex',
+  photos: 'photos',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AnimalScalarFieldEnum = (typeof AnimalScalarFieldEnum)[keyof typeof AnimalScalarFieldEnum]
+
+
+export const AdoptionLogScalarFieldEnum = {
+  id: 'id',
+  animalId: 'animalId',
+  adopterName: 'adopterName',
+  adopterCpf: 'adopterCpf',
+  adopterPhone: 'adopterPhone',
+  adopterEmail: 'adopterEmail',
+  adoptedAt: 'adoptedAt'
+} as const
+
+export type AdoptionLogScalarFieldEnum = (typeof AdoptionLogScalarFieldEnum)[keyof typeof AdoptionLogScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -95,4 +143,12 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

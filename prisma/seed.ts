@@ -1,7 +1,9 @@
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '../src/generated/prisma/client'
 import { seedDatabase } from 'src/utils/extensions/utilsDb'
-import { seedUsers } from './userseed/seed'
+import { seedUsers } from './userSeed/seed'
+import { seedAnimalTypes } from './animalTypeSeed/seed'
+import { seedAnimals } from './animalSeed/seed'
 
 const connectionString = process.env.DATABASE_URL
 const schema = 'public'
@@ -16,7 +18,15 @@ async function main() {
 			user: {
 				data: seedUsers,
 				// sujeito a erro por conta do id
-				whereCb: (item: any) => ({ id: item.id })
+				whereCb: (item: { id: string }) => ({ id: item.id })
+			},
+			animalType: {
+				data: seedAnimalTypes,
+				whereCb: (item: { id: number }) => ({ id: item.id })
+			},
+			animal: {
+				data: seedAnimals,
+				whereCb: (item: { id: string }) => ({ id: item.id })
 			}
 			// biome-ignore-end lint/suspicious/noExplicitAny: Required
 		}

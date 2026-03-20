@@ -22,3 +22,18 @@ export * from './enums.js';
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model AnimalType
+ * 
+ */
+export type AnimalType = Prisma.AnimalTypeModel
+/**
+ * Model Animal
+ * 
+ */
+export type Animal = Prisma.AnimalModel
+/**
+ * Model AdoptionLog
+ * 
+ */
+export type AdoptionLog = Prisma.AdoptionLogModel
