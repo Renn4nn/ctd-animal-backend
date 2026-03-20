@@ -21,6 +21,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CustomPrismaModule } from './utils/extensions/custom.prisma';
 import { PrismaClientFactory } from './utils/extensions/prisma.utils';
 import { UserModule } from './user/user.module';
+import { AnimalTypeModule } from './animalType/animalType.module';
 
 @Catch(HttpException)
 class HttpExceptionFilter extends BaseExceptionFilter {
@@ -41,18 +42,19 @@ class HttpExceptionFilter extends BaseExceptionFilter {
 
 @Module({
   imports: [
-		ConfigModule.forRoot({
-			isGlobal: true,
-			ignoreEnvFile: process.env.NODE_ENV === 'production'
-		}),
-		CustomPrismaModule.forRootAsync({
-			name: 'PrismaService',
-			isGlobal: true,
-			useFactory: PrismaClientFactory,
-			inject: [ConfigService]
-		}),
-		UserModule
-	],
+    ConfigModule.forRoot({
+      isGlobal: true,
+      ignoreEnvFile: process.env.NODE_ENV === 'production'
+    }),
+    CustomPrismaModule.forRootAsync({
+      name: 'PrismaService',
+      isGlobal: true,
+      useFactory: PrismaClientFactory,
+      inject: [ConfigService]
+    }),
+    UserModule,
+    AnimalTypeModule
+  ],
   providers: [
     {
       provide: APP_PIPE,
@@ -68,4 +70,4 @@ class HttpExceptionFilter extends BaseExceptionFilter {
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

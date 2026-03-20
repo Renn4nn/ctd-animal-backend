@@ -7,8 +7,8 @@ import { Prisma } from "src/generated/prisma/client";
 export class UserRepository implements IUserRepository {
     constructor(
         @Inject('PrismaService')
-        private readonly prisma: PrismaClient) {}
-    
+        private readonly prisma: PrismaClient) { }
+
     user(where: Prisma.UserWhereUniqueInput) {
         return this.prisma.user.findUniqueOrThrow({
             where
@@ -28,7 +28,7 @@ export class UserRepository implements IUserRepository {
     }
 
     updateUser(params: UpdateUserParams) {
-        return this.prisma.user.update({...params});
+        return this.prisma.user.update({ ...params });
     }
 
     deleteUser(where: Prisma.UserWhereUniqueInput) {
@@ -36,5 +36,5 @@ export class UserRepository implements IUserRepository {
             where
         });
     }
-    
+
 }
