@@ -22,6 +22,7 @@ import { CustomPrismaModule } from './utils/extensions/custom.prisma';
 import { PrismaClientFactory } from './utils/extensions/prisma.utils';
 import { UserModule } from './user/user.module';
 import { AnimalTypeModule } from './animalType/animalType.module';
+import { AnimalModule } from './animal/animal.module';
 
 @Catch(HttpException)
 class HttpExceptionFilter extends BaseExceptionFilter {
@@ -53,7 +54,8 @@ class HttpExceptionFilter extends BaseExceptionFilter {
       inject: [ConfigService]
     }),
     UserModule,
-    AnimalTypeModule
+    AnimalTypeModule,
+    AnimalModule
   ],
   providers: [
     {
