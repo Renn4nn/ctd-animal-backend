@@ -14,7 +14,10 @@ export const createAnimalTypeSchema = z.object({
   label: z.string().min(1, "O label é obrigatório"),
 });
 
-export const updateAnimalTypeSchema = createAnimalTypeSchema.partial()
+export const updateAnimalTypeSchema = z.object({
+  label: z.string().min(1).optional(),
+  active: z.boolean().optional(),
+});
 
 export type AnimalType = z.infer<typeof animalTypeSchema>;
 export type AnimalTypeUpdate = z.infer<typeof updateAnimalTypeSchema>;

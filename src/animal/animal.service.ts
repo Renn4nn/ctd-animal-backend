@@ -16,7 +16,7 @@ export class AnimalService implements IAnimalService {
     return this.animalRepository.animal({ id });
   }
 
-  createAnimal(data: AnimalCreate): Promise<Animal> {
+  createAnimal(data: AnimalCreate & { id?: string }): Promise<Animal> {
     return this.animalRepository.createAnimal(data);
   }
 

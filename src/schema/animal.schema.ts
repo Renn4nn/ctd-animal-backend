@@ -15,7 +15,13 @@ export const animalSchema = z.object({
   vaccines: z.array(z.string()).default([]),
   size: z.enum(AnimalSize),
   sex: z.enum(AnimalSex),
-  photos: z.array(z.string()).default([]),
+  photos: z
+    .union([
+      z.array(z.string()),
+      z.string().transform((val) => JSON.parse(val)),
+    ])
+    .optional()
+    .default([]),
   status: z.enum(AnimalStatus).default(AnimalStatus.Disponivel),
   createdAt: z.date(),
   updatedAt: z.date(),
@@ -32,7 +38,13 @@ export const createAnimalSchema = z.object({
   vaccines: z.array(z.string()).default([]),
   size: z.enum(AnimalSize),
   sex: z.enum(AnimalSex),
-  photos: z.array(z.string()).default([]),
+  photos: z
+    .union([
+      z.array(z.string()),
+      z.string().transform((val) => JSON.parse(val)),
+    ])
+    .optional()
+    .default([]),
   status: z.enum(AnimalStatus).default(AnimalStatus.Disponivel),
 }) satisfies z.ZodType<Prisma.AnimalUncheckedCreateInput>;
 

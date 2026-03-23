@@ -1,7 +1,9 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, ParseFilePipeBuilder, ParseUUIDPipe, Patch, Post, UploadedFile } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, UseInterceptors, UploadedFiles } from "@nestjs/common";
 import { AnimalService } from "./animal.service";
-import type { Animal, AnimalCreate, AnimalUpdate } from "src/schema/animal.schema";
+import type { Animal, AnimalUpdate } from "src/schema/animal.schema";
 import { ApiSuccessResponse } from "src/utils/apitypes/api.response.types";
+import { FilesInterceptor } from "@nestjs/platform-express";
+import { multerConfig } from "src/utils/config/multer/multer";
 
 @Controller('animal')
 export class AnimalController {
@@ -24,30 +26,35 @@ export class AnimalController {
   }
 
   @Post()
+  @UseInterceptors(FilesInterceptor('files', 10, multerConfig))
   async createAnimal(
-    @Body() animal: AnimalCreate,
-    @UploadedFile(
-      new ParseFilePipeBuilder()
-        .addFileTypeValidator({
-          fileType: /(jpg|jpeg|png|webp)$/, // Regex para aceitar formatos de imagem
-        })
-        .addMaxSizeValidator({
-          maxSize: 5 * 1024 * 1024, // 5MB
-        })
-        .build({
-          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-          fileIsRequired: false, // Permite criar o animal sem foto
-        }),
-    ) files: Express.Multer.File[]
-  ): Promise<ApiSuccessResponse<Animal>> {
-    const photoPaths = files?.map(file => `/photos/animals/${file.filename}`) || [];
-    const result = await this.service.createAnimal({
+    @Body() animal: any,
+    @UploadedFiles() files: Express.Multer.File[],
+  ) {
+
+    // 🔥 corrigir tipos
+    const parsedAnimal = {
       ...animal,
-      photos: [...(animal.photos || []), ...photoPaths],
-    });
-    return {
-      data: result
+      typeId: Number(animal.typeId),
+      vaccines: animal.vaccines
+        ? JSON.parse(animal.vaccines)
+        : [],
+      photos: animal.photos
+        ? JSON.parse(animal.photos)
+        : [],
     };
+
+    const filePaths =
+      files?.map(file => `/photos/animals/${file.filename}`) || [];
+
+    const photos = [...parsedAnimal.photos, ...filePaths];
+
+    const result = await this.service.createAnimal({
+      ...parsedAnimal,
+      photos,
+    });
+
+    return { data: result };
   }
 
   @Patch(':id')

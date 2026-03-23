@@ -1,5 +1,5 @@
 import { Prisma } from "../../generated/prisma/client";
-import { AdptionLog, AdptionLogCreateDTO, AdptionLogUpdateDTO } from "../../schema/adptionLog.schema";
+import { AdptionLog, AdptionLogCreate, AdptionLogUpdate } from "../../schema/adptionLog.schema";
 import { ApiResponse } from "../apitypes/api.response.types";
 
 export type GetAdptionLogParams = {
@@ -11,12 +11,12 @@ export type GetAdptionLogParams = {
 }
 
 export type CreateAdptionLogParams = {
-  data: Prisma.AdoptionLogCreateInput
+  data: Prisma.AdoptionLogUncheckedCreateInput
 }
 
 export type UpdateAdptionLogParams = {
   where: Prisma.AdoptionLogWhereUniqueInput
-  data: Prisma.AdoptionLogUpdateInput
+  data: Prisma.AdoptionLogUncheckedUpdateInput
 }
 
 export interface IAdptionLogRepository {
@@ -24,7 +24,7 @@ export interface IAdptionLogRepository {
     adptionLogWhereUniqueInput: Prisma.AdoptionLogWhereUniqueInput
   ): Promise<AdptionLog>
   adptionLogs(params: GetAdptionLogParams): Promise<AdptionLog[]>
-  createAdptionLog(data: AdptionLogCreateDTO): Promise<AdptionLog>
+  createAdptionLog(data: Prisma.AdoptionLogUncheckedCreateInput): Promise<AdptionLog>
   updateAdptionLog(params: UpdateAdptionLogParams): Promise<AdptionLog>
   deleteAdptionLog(where: Prisma.AdoptionLogWhereUniqueInput): Promise<AdptionLog>
 }
@@ -32,15 +32,15 @@ export interface IAdptionLogRepository {
 export interface IAdptionLogService {
   getAdptionLogs(): Promise<AdptionLog[]>
   getAdptionLogById(id: string): Promise<AdptionLog>
-  createAdptionLog(data: AdptionLogCreateDTO): Promise<AdptionLog>
-  updateAdptionLog(id: string, data: AdptionLogUpdateDTO): Promise<AdptionLog>
+  createAdptionLog(data: AdptionLogCreate): Promise<AdptionLog>
+  updateAdptionLog(id: string, data: AdptionLogUpdate): Promise<AdptionLog>
   deleteAdptionLog(id: string): Promise<AdptionLog>
 }
 
 export interface IAdptionLogController {
   getAdptionLogs(): Promise<ApiResponse<AdptionLog[]>>
   getAdptionLogById(id: string): Promise<ApiResponse<AdptionLog>>
-  createAdptionLog(data: AdptionLogCreateDTO): Promise<ApiResponse<AdptionLog>>
-  updateAdptionLog(id: string, data: AdptionLogUpdateDTO): Promise<ApiResponse<AdptionLog>>
+  createAdptionLog(data: AdptionLogCreate): Promise<ApiResponse<AdptionLog>>
+  updateAdptionLog(id: string, data: AdptionLogUpdate): Promise<ApiResponse<AdptionLog>>
   deleteAdptionLog(id: string): Promise<ApiResponse<AdptionLog>>
 }
