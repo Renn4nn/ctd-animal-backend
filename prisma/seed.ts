@@ -17,8 +17,8 @@ async function main() {
 			// biome-ignore-start lint/suspicious/noExplicitAny: Required
 			user: {
 				data: seedUsers,
-				// sujeito a erro por conta do id
-				whereCb: (item: { id: string }) => ({ id: item.id })
+				// usando email como chave única estável para upsert
+				whereCb: (item: { email: string }) => ({ email: item.email })
 			},
 			animalType: {
 				data: seedAnimalTypes,

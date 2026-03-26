@@ -24,6 +24,8 @@ import { UserModule } from './user/user.module';
 import { AnimalTypeModule } from './animalType/animalType.module';
 import { AnimalModule } from './animal/animal.module';
 import { AdptionLogModule } from './adptionLog/adptionLog.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Catch(HttpException)
 class HttpExceptionFilter extends BaseExceptionFilter {
@@ -53,6 +55,11 @@ class HttpExceptionFilter extends BaseExceptionFilter {
       isGlobal: true,
       useFactory: PrismaClientFactory,
       inject: [ConfigService]
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'uploads/photos/animals'),
+      serveRoot: '/uploads',
+      exclude: ['/api/(.*)'],
     }),
     UserModule,
     AnimalTypeModule,

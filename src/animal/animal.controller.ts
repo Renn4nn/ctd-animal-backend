@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, UseInterceptors, UploadedFiles } from "@nestjs/common";
 import { AnimalService } from "./animal.service";
-import type { Animal, AnimalUpdate } from "src/schema/animal.schema";
+import type { Animal, AnimalCreate, AnimalUpdate } from "src/schema/animal.schema";
 import { ApiSuccessResponse } from "src/utils/apitypes/api.response.types";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { multerConfig } from "src/utils/config/multer/multer";
@@ -28,24 +28,36 @@ export class AnimalController {
   @Post()
   @UseInterceptors(FilesInterceptor('files', 10, multerConfig))
   async createAnimal(
-    @Body() animal: any,
+    @Body() animal: Record<string, unknown>,
     @UploadedFiles() files: Express.Multer.File[],
-  ) {
-
-    // 🔥 corrigir tipos
-    const parsedAnimal = {
-      ...animal,
-      typeId: Number(animal.typeId),
-      vaccines: animal.vaccines
-        ? JSON.parse(animal.vaccines)
-        : [],
-      photos: animal.photos
-        ? JSON.parse(animal.photos)
-        : [],
+  ): Promise<ApiSuccessResponse<Animal>> {
+    const parseJsonArray = (value: unknown): string[] => {
+      if (Array.isArray(value)) return value.map(String);
+      if (typeof value !== 'string' || value.trim() === '') return [];
+      try {
+        const parsed = JSON.parse(value);
+        return Array.isArray(parsed) ? parsed.map(String) : [];
+      } catch {
+        return [];
+      }
     };
 
-    const filePaths =
-      files?.map(file => `/photos/animals/${file.filename}`) || [];
+    const parsedAnimal: AnimalCreate = {
+      name: String(animal.name ?? ''),
+      typeId: Number(animal.typeId),
+      breed: String(animal.breed ?? ''),
+      age: String(animal.age ?? ''),
+      description: (animal.description ?? null) as string | null,
+      story: (animal.story ?? null) as string | null,
+      behavior: (animal.behavior ?? null) as string | null,
+      vaccines: parseJsonArray(animal.vaccines),
+      size: animal.size as AnimalCreate['size'],
+      sex: animal.sex as AnimalCreate['sex'],
+      photos: parseJsonArray(animal.photos),
+      status: (animal.status as AnimalCreate['status']) ?? undefined,
+    };
+
+    const filePaths = files?.map((file) => `/uploads/photos/animals/${file.filename}`) || [];
 
     const photos = [...parsedAnimal.photos, ...filePaths];
 
