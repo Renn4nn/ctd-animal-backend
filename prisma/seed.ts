@@ -5,7 +5,8 @@ import { seedUsers } from './userSeed/seed'
 import { seedAnimalTypes } from './animalTypeSeed/seed'
 import { seedAnimals } from './animalSeed/seed'
 
-const connectionString = process.env.DATABASE_URL
+const DATABASE_URL = `postgresql://${process.env.POSTGRES_USER}:${process.env.POSTGRES_PASSWORD}@${process.env.POSTGRES_HOST}:${process.env.POSTGRES_PORT}/${process.env.POSTGRES_DB}`;
+const connectionString = DATABASE_URL
 const schema = 'public'
 const adapter = new PrismaPg({ connectionString }, { schema })
 const prisma = new PrismaClient({ adapter })
