@@ -44,7 +44,7 @@ model AnimalType {
 model Animal {
   id          String       @id @default(uuid())
   name        String
-  type        AnimalType   @relation(fields: [typeId], references: [id])
+  type        AnimalType   @relation(fields: [typeId], references: [id], onDelete: Cascade)
   typeId      Int
   breed       String
   age         String
@@ -65,7 +65,7 @@ model Animal {
 
 model AdoptionLog {
   id       String @id @default(uuid())
-  animal   Animal @relation(fields: [animalId], references: [id])
+  animal   Animal @relation(fields: [animalId], references: [id], onDelete: Cascade)
   animalId String @unique
 
   adopterName  String

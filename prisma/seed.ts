@@ -10,6 +10,8 @@ const schema = 'public'
 const adapter = new PrismaPg({ connectionString }, { schema })
 const prisma = new PrismaClient({ adapter })
 
+// NÃO RODE NENHUMA SEED
+
 async function main() {
 	await seedDatabase({
 		prisma,
