@@ -1,15 +1,22 @@
 import "dotenv/config";
-import { defineConfig } from "prisma/config";
 
-const DATABASE_URL = `postgresql://${process.env.POSTGRES_USER}:${process.env.POSTGRES_PASSWORD}@${process.env.POSTGRES_HOST}:${process.env.POSTGRES_PORT}/${process.env.POSTGRES_DB}`;
+const getDatabaseUrl = () => {
+  if (process.env.DATABASE_URL) return process.env.DATABASE_URL;
 
-export default defineConfig({
+  if (process.env.POSTGRES_HOST) {
+    const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_PORT = '5432', POSTGRES_DB } = process.env;
+    return `postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public`;
+  }
+
+  return undefined;
+};
+
+export default {
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
-    seed: "tsx prisma/seed.ts",
   },
   datasource: {
-    url: DATABASE_URL,
+    url: getDatabaseUrl(),
   },
-});
+};
