@@ -26,7 +26,7 @@ export class AnimalController {
   }
 
   @Post()
-  @UseInterceptors(FilesInterceptor('files', 10, multerConfig))
+  @UseInterceptors(FilesInterceptor('files', 20, multerConfig))
   async createAnimal(
     @Body() animal: Record<string, unknown>,
     @UploadedFiles() files: Express.Multer.File[],

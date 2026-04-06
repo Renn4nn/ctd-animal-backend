@@ -22,4 +22,12 @@ export const multerConfig = {
       cb(null, `${uniqueName}${ext}`);
     },
   }),
+  fileFilter: (req, file, cb) => {
+    const allowedMimeTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+    if (allowedMimeTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Apenas imagens (PNG, JPG, WEBP) são permitidas'), false);
+    }
+  },
 };
