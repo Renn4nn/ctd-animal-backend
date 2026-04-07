@@ -3,7 +3,7 @@ import { AnimalTypeService } from "./animalType.service";
 import { AnimalType, AnimalTypeCreateDTO, AnimalTypeUpdateDTO } from "src/schema/animalType.schema";
 import { ApiSuccessResponse } from "src/utils/apitypes/api.response.types";
 
-@Controller('animal-type')
+@Controller('api/animal-type')
 export class AnimalTypeController {
   constructor(private readonly service: AnimalTypeService) { }
 

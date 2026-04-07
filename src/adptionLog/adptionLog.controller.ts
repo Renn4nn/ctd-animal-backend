@@ -3,7 +3,7 @@ import { AdptionLogService } from "./adptionLog.service";
 import type { AdptionLog, AdptionLogCreate, AdptionLogUpdate } from "src/schema/adptionLog.schema";
 import { ApiSuccessResponse } from "src/utils/apitypes/api.response.types";
 
-@Controller('adption-log')
+@Controller('api/adption-log')
 export class AdptionLogController {
   constructor(private readonly service: AdptionLogService) { }
 

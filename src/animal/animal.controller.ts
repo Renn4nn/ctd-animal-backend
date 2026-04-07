@@ -5,7 +5,7 @@ import { ApiSuccessResponse } from "src/utils/apitypes/api.response.types";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { multerConfig } from "src/utils/config/multer/multer";
 
-@Controller('animal')
+@Controller('api/animal')
 export class AnimalController {
   constructor(private readonly service: AnimalService) { }
 
