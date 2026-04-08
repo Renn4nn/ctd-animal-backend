@@ -3,13 +3,13 @@ import { UserService } from "./user.service";
 import { CreateUserDto, UpdateUserDto, UserSchema } from "src/schema/user.schema";
 import { ApiSuccessResponse } from "src/utils/apitypes/api.response.types";
 
-@Controller('user')
+@Controller('api/user')
 export class UserController {
-    constructor(private readonly service: UserService) {}
+    constructor(private readonly service: UserService) { }
 
     @Get()
     async getUsers(): Promise<ApiSuccessResponse<UserSchema[]>> {
-        const result =  await this.service.getUsers(); 
+        const result = await this.service.getUsers();
         return {
             data: result
         }
@@ -26,6 +26,19 @@ export class UserController {
     @Post()
     async createUser(@Body() user: CreateUserDto): Promise<ApiSuccessResponse<UserSchema>> {
         const result = await this.service.createUser(user);
+        return {
+            data: result
+        }
+    }
+
+    @Post('login')
+    async login(@Body() { login, password }: { login: string, password: string }) {
+        const result = await this.service.validateUser(login, password);
+        if (!result) {
+            return {
+                data: "Usuario ou senha incorretos!"
+            }
+        }
         return {
             data: result
         }

@@ -3,8 +3,8 @@ import { Prisma } from "src/generated/prisma/client";
 import { z } from "zod";
 
 export const createUserSchema = z.object({
-  name: z.string(),
-  email: z.string().email(),
+  login: z.string(),
+  password: z.string().min(6),
 }) satisfies z.ZodType<Prisma.UserCreateInput>
 
 export const userSchema = z.object({
@@ -22,6 +22,6 @@ export type UpdateUserInput = z.infer<typeof updateUserSchema>
 export type UserSchema = z.infer<typeof userSchema>
 
 // DTOs
-export class UserDto extends createZodDto(userSchema) {}
-export class CreateUserDto extends createZodDto(createUserSchema) {}
-export class UpdateUserDto extends createZodDto(updateUserSchema) {}
+export class UserDto extends createZodDto(userSchema) { }
+export class CreateUserDto extends createZodDto(createUserSchema) { }
+export class UpdateUserDto extends createZodDto(updateUserSchema) { }

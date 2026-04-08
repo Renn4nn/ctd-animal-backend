@@ -48,7 +48,7 @@ class HttpExceptionFilter extends BaseExceptionFilter {
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      ignoreEnvFile: process.env.NODE_ENV === 'production'
+      envFilePath: ['.env.production', '.env'],
     }),
     CustomPrismaModule.forRootAsync({
       name: 'PrismaService',
