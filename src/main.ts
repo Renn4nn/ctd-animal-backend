@@ -6,20 +6,30 @@ import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors()
+  const configService = app.get(ConfigService);
 
-  const openApiDoc = SwaggerModule.createDocument(
-    app,
-    new DocumentBuilder()
-      .setTitle('Example API')
-      .setDescription('Example API description')
+  app.enableCors();
+  const isNotProduction = configService.get('NODE_ENV') !== 'production';
+
+  if (isNotProduction) {
+    const config = new DocumentBuilder()
+      .setTitle('CTD Animal API')
+      .setDescription('API para gerenciamento de animais')
       .setVersion('1.0')
-      .build(),
-  );
+      .addBearerAuth()
+      .build();
 
-  SwaggerModule.setup('api', app, cleanupOpenApiDoc(openApiDoc));
-  const PORT = app.get(ConfigService).getOrThrow('PORT') || 3000;
+    const openApiDoc = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api', app, cleanupOpenApiDoc(openApiDoc), {
+      swaggerOptions: {
+        persistAuthorization: true,
+      },
+    });
+    console.log("Swagger UI is enabled (Development Mode)");
+  }
+
+  const PORT = configService.get('PORT') || 3000;
   await app.listen(PORT);
-  console.log("Server running on port", PORT);
+  console.log(`Server running on port ${PORT}`);
 }
 bootstrap();
