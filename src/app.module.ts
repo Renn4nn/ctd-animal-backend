@@ -7,6 +7,7 @@ import {
   APP_PIPE,
   APP_INTERCEPTOR,
   APP_FILTER,
+  APP_GUARD,
   BaseExceptionFilter,
 } from '@nestjs/core';
 import { ZodError } from 'zod';
@@ -26,7 +27,8 @@ import { AnimalModule } from './animal/animal.module';
 import { AdptionLogModule } from './adptionLog/adptionLog.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { JwtStrategy } from './utils/auth/jwt-strategy';
+import { AuthModule } from './utils/auth/auth.module';
+import { JwtGlobalGuard } from './utils/auth/jwt-global.guard';
 
 @Catch(HttpException)
 class HttpExceptionFilter extends BaseExceptionFilter {
@@ -66,6 +68,7 @@ class HttpExceptionFilter extends BaseExceptionFilter {
     AnimalTypeModule,
     AnimalModule,
     AdptionLogModule,
+    AuthModule,
   ],
   providers: [
     {
@@ -80,7 +83,10 @@ class HttpExceptionFilter extends BaseExceptionFilter {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
-    JwtStrategy
+    {
+      provide: APP_GUARD,
+      useClass: JwtGlobalGuard,
+    },
   ],
 })
 export class AppModule { }

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, UseInterceptors, UploadedFiles } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, UseInterceptors, UploadedFiles, UseGuards } from "@nestjs/common";
 import { AnimalService } from "./animal.service";
 import type { Animal, AnimalCreate, AnimalUpdate } from "src/schema/animal.schema";
 import { ApiSuccessResponse } from "src/utils/apitypes/api.response.types";
@@ -6,8 +6,10 @@ import { FilesInterceptor } from "@nestjs/platform-express";
 import { multerConfig } from "src/utils/config/multer/multer";
 import * as fs from "fs";
 import * as path from "path";
+import { JwtAuthGuard } from "src/utils/auth/jwt-auth.guard";
 
 @Controller('api/animal')
+@UseGuards(JwtAuthGuard)
 export class AnimalController {
   constructor(private readonly service: AnimalService) { }
 

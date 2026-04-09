@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from "@nestjs/common";
 import { AnimalTypeService } from "./animalType.service";
 import { AnimalType, AnimalTypeCreateDTO, AnimalTypeUpdateDTO } from "src/schema/animalType.schema";
 import { ApiSuccessResponse } from "src/utils/apitypes/api.response.types";
+import { JwtAuthGuard } from "src/utils/auth/jwt-auth.guard";
 
 @Controller('api/animal-type')
+@UseGuards(JwtAuthGuard)
 export class AnimalTypeController {
   constructor(private readonly service: AnimalTypeService) { }
 

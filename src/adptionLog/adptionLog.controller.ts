@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, UseGuards } from "@nestjs/common";
 import { AdptionLogService } from "./adptionLog.service";
 import type { AdptionLog, AdptionLogCreate, AdptionLogUpdate } from "src/schema/adptionLog.schema";
 import { ApiSuccessResponse } from "src/utils/apitypes/api.response.types";
+import { JwtAuthGuard } from "src/utils/auth/jwt-auth.guard";
 
 @Controller('api/adption-log')
+@UseGuards(JwtAuthGuard)
 export class AdptionLogController {
   constructor(private readonly service: AdptionLogService) { }
 

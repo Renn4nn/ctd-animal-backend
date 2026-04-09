@@ -30,6 +30,10 @@ async function main() {
       }
       // biome-ignore-end lint/suspicious/noExplicitAny: Required
     }
+  }).finally(() => {
+    console.log('Seed completed with information:')
+    console.log('  - Admin login:', process.env.ADMIN_LOGIN || 'ctd.admin')
+    console.log('  - Admin password:', process.env.ADMIN_PASSWORD || 'ctd-secure-password')
   })
 }
 
