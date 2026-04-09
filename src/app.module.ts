@@ -62,7 +62,6 @@ class HttpExceptionFilter extends BaseExceptionFilter {
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', 'uploads/photos/animals'),
       serveRoot: '/uploads',
-      exclude: ['/api/(.*)'],
     }),
     UserModule,
     AnimalTypeModule,

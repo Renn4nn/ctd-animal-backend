@@ -74,11 +74,76 @@ export class AnimalController {
   }
 
   @Patch(':id')
-  async updateAnimal(@Param('id', ParseUUIDPipe) id: string, @Body() animal: AnimalUpdate): Promise<ApiSuccessResponse<Animal>> {
-    const result = await this.service.updateAnimal(id, animal);
-    return {
-      data: result
+  @UseInterceptors(FilesInterceptor('files', 20, multerConfig))
+  async updateAnimal(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() animal: Record<string, unknown>,
+    @UploadedFiles() files?: Express.Multer.File[],
+  ): Promise<ApiSuccessResponse<Animal>> {
+    const parseJsonArray = (value: unknown): string[] => {
+      if (Array.isArray(value)) return value.map(String);
+      if (typeof value !== 'string' || value.trim() === '') return [];
+      try {
+        const parsed = JSON.parse(value);
+        return Array.isArray(parsed) ? parsed.map(String) : [];
+      } catch {
+        return [];
+      }
     };
+
+    const parsedAnimal: AnimalUpdate = {};
+    if (animal.name !== undefined) parsedAnimal.name = String(animal.name);
+    if (animal.typeId !== undefined) parsedAnimal.typeId = Number(animal.typeId);
+    if (animal.breed !== undefined) parsedAnimal.breed = String(animal.breed);
+    if (animal.age !== undefined) parsedAnimal.age = String(animal.age);
+    if (animal.size !== undefined) parsedAnimal.size = animal.size as any;
+    if (animal.sex !== undefined) parsedAnimal.sex = animal.sex as any;
+    if (animal.status !== undefined) parsedAnimal.status = animal.status as any;
+    
+    // Treat empty strings as null if needed, but keeping them as string is fine too.
+    if (animal.description !== undefined) parsedAnimal.description = animal.description ? String(animal.description) : null;
+    if (animal.story !== undefined) parsedAnimal.story = animal.story ? String(animal.story) : null;
+    if (animal.behavior !== undefined) parsedAnimal.behavior = animal.behavior ? String(animal.behavior) : null;
+    
+    if (animal.vaccines !== undefined) parsedAnimal.vaccines = parseJsonArray(animal.vaccines);
+    
+    // Busca o animal do DB para checar as imagens persistidas antes do update
+    const existingAnimal = await this.service.getAnimalById(id);
+
+    if (animal.photos !== undefined) {
+      parsedAnimal.photos = parseJsonArray(animal.photos);
+    }
+
+    const filePaths = files?.map((file) => `/uploads/photos/animals/${file.filename}`) || [];
+
+    if (filePaths.length > 0 || parsedAnimal.photos !== undefined) {
+       const keptPhotos = parsedAnimal.photos !== undefined ? parsedAnimal.photos : (existingAnimal?.photos || []);
+       parsedAnimal.photos = [...keptPhotos, ...filePaths];
+    }
+
+    // Exclusão física no File System das fotos que saíram do array
+    if (animal.photos !== undefined && existingAnimal && existingAnimal.photos) {
+      const remainingOrNewPhotos = parsedAnimal.photos || [];
+      const deletedPhotos = existingAnimal.photos.filter((oldPhoto) => typeof oldPhoto === 'string' && !remainingOrNewPhotos.includes(oldPhoto));
+
+      if (deletedPhotos.length > 0) {
+        for (const photoPath of deletedPhotos) {
+          try {
+            const filename = path.basename(photoPath);
+            const fullPath = path.join(process.cwd(), 'uploads', 'photos', 'animals', filename);
+
+            if (fs.existsSync(fullPath)) {
+              fs.unlinkSync(fullPath);
+            }
+          } catch (error) {
+            console.error(`Erro ao excluir imagem ${photoPath} local:`, error);
+          }
+        }
+      }
+    }
+
+    const result = await this.service.updateAnimal(id, parsedAnimal);
+    return { data: result };
   }
 
   @Delete(':id')
