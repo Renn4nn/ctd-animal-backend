@@ -26,6 +26,7 @@ import { AnimalModule } from './animal/animal.module';
 import { AdptionLogModule } from './adptionLog/adptionLog.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { JwtStrategy } from './utils/auth/jwt-strategy';
 
 @Catch(HttpException)
 class HttpExceptionFilter extends BaseExceptionFilter {
@@ -64,7 +65,7 @@ class HttpExceptionFilter extends BaseExceptionFilter {
     UserModule,
     AnimalTypeModule,
     AnimalModule,
-    AdptionLogModule
+    AdptionLogModule,
   ],
   providers: [
     {
@@ -79,6 +80,7 @@ class HttpExceptionFilter extends BaseExceptionFilter {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
+    JwtStrategy
   ],
 })
 export class AppModule { }

@@ -15,6 +15,9 @@ npx prisma generate
 echo "🔄 Executando migrações..."
 npx prisma migrate deploy
 
+echo "🔄 Executando seed..."
+npx prisma db seed
+
 echo "🚀 Iniciando aplicação..."
 echo "📂 Listando conteúdo da pasta dist para debug:"
 find ./dist -name "main.js"
