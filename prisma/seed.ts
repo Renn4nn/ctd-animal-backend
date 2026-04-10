@@ -1,6 +1,6 @@
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '../src/generated/prisma/client'
-import { seedDatabase } from 'src/utils/extensions/utilsDb'
+import { seedDatabase } from '../src/utils/extensions/utilsDb'
 import * as bcrypt from 'bcrypt'
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_PORT = '5432', POSTGRES_DB } = process.env;

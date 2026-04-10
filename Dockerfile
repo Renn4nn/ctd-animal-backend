@@ -37,6 +37,8 @@ COPY --from=builder --chown=nestjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nestjs:nodejs /app/package.json ./package.json
 COPY --from=builder --chown=nestjs:nodejs /app/prisma ./prisma
 COPY --chown=nestjs:nodejs entrypoint.sh ./entrypoint.sh
+COPY --from=builder --chown=nestjs:nodejs /app/src ./src 
+COPY --chown=nestjs:nodejs entrypoint.sh ./entrypoint.sh
 
 COPY --from=builder --chown=nestjs:nodejs /app/prisma.config.ts ./prisma.config.ts
 
